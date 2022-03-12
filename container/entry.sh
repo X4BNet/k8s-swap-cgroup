@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [[ -z "$SWAP_PCT" ]]; then
+    SWAP_PCT="0.7"
+fi
+
 OUR_PID="$$"
 
 function do_rdns {
@@ -11,7 +15,7 @@ function do_rdns {
             memlimit=$(cat "$fbase/memory.max")
             if [[ "$memlimit" != "max" ]]; then
                     echo "memory.max: $memlimit"
-                    memory_high=$(awk -vp=$memlimit 'BEGIN{printf "%d" , p*0.7}')
+                    memory_high=$(awk -vp=$memlimit 'BEGIN{printf "%d" , p*'$SWAP_PCT'}')
                     echo "memory.high: $memory_high"
                     echo "$memory_high" > $fbase/memory.high
                     echo "max" > $fbase/memory.swap.max

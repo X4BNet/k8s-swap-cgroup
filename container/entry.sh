@@ -4,11 +4,11 @@ if [[ -z "$SWAP_PCT" ]]; then
     SWAP_PCT="0.7"
 fi
 
-OUR_PID="$$"
-
-function do_rdns {
-    cgpath=$(cat /proc/$OUR_PID/cgroup | sed 's/0::\/..\/..\/../\/sys\/fs\/cgroup\/kubepods/')"/../"
-    echo "$cgpath"
+function do_cgroup {
+    docker_container=$(cat /proc/1/cgroup | sed 's/0::\/..\///')
+    echo "docker container: $docker_container"
+    cgpath=$(find /sys/fs/cgroup -type d -iname $docker_container)"/../"
+    echo "cgroup path: $cgpath"
 
     for f in "$cgpath"*/memory.swap.max; do
             fbase=$(dirname "$f")

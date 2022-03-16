@@ -9,6 +9,7 @@ function do_cgroup {
     cgpath=$(find /sys/fs/cgroup -type d -iname $docker_container)"/../"
 
     for f in "$cgpath"*/memory.swap.max; do
+            echo "Setting cgroup: $f"
             fbase=$(dirname "$f")
             memlimit=$(cat "$fbase/memory.max")
             if [[ "$memlimit" != "max" ]]; then

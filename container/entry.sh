@@ -13,6 +13,10 @@ function do_cgroup {
             fbase=$(dirname "$f")
             memlimit=$(cat "$fbase/memory.max")
             if [[ "$memlimit" != "max" ]]; then
+                    if [[ "$SWAP_PCT_ALT" != "" ]]; then
+                        memory_high=$(awk -vp=$memlimit 'BEGIN{printf "%d" , p*'$SWAP_PCT_ALT'}')
+                        echo "$memory_high" > $fbase/memory.high
+                    fi
                     memory_high=$(awk -vp=$memlimit 'BEGIN{printf "%d" , p*'$SWAP_PCT'}')
                     echo "$memory_high" > $fbase/memory.high
                     echo "max" > $fbase/memory.swap.max
@@ -22,5 +26,5 @@ function do_cgroup {
 
 while [[ 1 ]]; do
     do_cgroup
-    sleep 300
+    sleep 60
 done

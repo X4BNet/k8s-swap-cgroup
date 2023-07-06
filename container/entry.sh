@@ -5,7 +5,7 @@ if [[ -z "$SWAP_PCT" ]]; then
 fi
 
 function do_cgroup {
-    docker_container=$(cat /proc/1/cgroup | sed 's/0::\/..\///')
+    docker_container=$(cat /proc/1/cgroup | sed 's/0::.\+\/\(.\+\)/\1/')
     cgpath=$(find /sys/fs/cgroup -type d -iname $docker_container)"/../"
 
     for f in "$cgpath"*/memory.swap.max; do

@@ -18,8 +18,8 @@ function do_cgroup {
     fi
 
     for f in "$cgpath"*/memory.swap.max; do
-            echo "Setting cgroup: $f"
             fbase=$(dirname "$f")
+            echo "Setting cgroup: $fbase"
             memlimit=$(cat "$fbase/memory.max")
             if [[ "$memlimit" != "max" ]]; then
                     if [[ "$SWAP_PCT_ALT" != "" ]]; then
